@@ -1,6 +1,3 @@
-// this file is the component that renders the chat window and the input box
-// the bot will reply from the list of preset replies
-
 import React, { useState, useEffect } from 'react';
 import { DndContext, closestCenter } from '@dnd-kit/core';
 import { arrayMove, SortableContext } from '@dnd-kit/sortable';
@@ -37,7 +34,6 @@ const ChatBox = () => {
   const handleSendMessage = () => {
     if (inputValue.trim() === '') return; // Prevent empty messages
 
-    //I am trying to get the order number of the last message in the array here
     const newUserMessage = {
       id: Date.now().toString(),
       text: inputValue,
@@ -56,13 +52,13 @@ const ChatBox = () => {
       const randomReply = botReplies[Math.floor(Math.random() * botReplies.length)];
       const botReply = {
         id: (Date.now() + 1).toString(),
-        text: randomReply, // Bot picks a random reply
+        text: randomReply,
         sender: 'bot',
         order: messages.length + 2,
       };
       setMessages((prevMessages) => [
         ...prevMessages,
-        { ...botReply, order: prevMessages.length + 1 },
+        { ...botReply, order: prevMessages.length + 2 },
       ]);
     }, 1000);
   };
@@ -122,7 +118,7 @@ const SortableMessageBubble = ({ message }) => {
 
   return (
     <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      <MessageBubble message={message} />
+      <MessageBubble message={message} isOver={message.isOver} />
     </div>
   );
 };

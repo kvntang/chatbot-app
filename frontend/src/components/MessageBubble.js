@@ -9,6 +9,9 @@ const MessageBubble = ({ message, isActive, isOver }) => {
       ? 'bot-message' 
       : 'merged-message';
 
+  // Add the dropzone class if the message is being hovered over
+  const dropzoneClass = isOver ? 'dropzone' : '';
+
   if (isOver && !isActive) {
     console.log('Message is being hovered over (potential drop target)');
   }
@@ -18,7 +21,7 @@ const MessageBubble = ({ message, isActive, isOver }) => {
   }
 
   return (
-    <div className={`message-bubble ${bubbleClass}`}>
+    <div className={`message-bubble ${bubbleClass} ${dropzoneClass}`}>
       {message.text}
     </div>
   );

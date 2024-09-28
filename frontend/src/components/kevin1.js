@@ -1,9 +1,6 @@
-// this is the component that renders the chat window and the input box
-// the bot will reply with the same message back to the user
-
 import React, { useState } from 'react';
 import { DndContext, closestCenter } from '@dnd-kit/core';
-import { arrayMove, SortableContext } from '@dnd-kit/sortable';
+import { SortableContext } from '@dnd-kit/sortable';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import MessageBubble from './MessageBubble';
@@ -35,7 +32,7 @@ const ChatBox = () => {
     setTimeout(() => {
       const botReply = {
         id: (Date.now() + 1).toString(),
-        text: `Bot reply to: ${inputValue}`,
+        text: `Hello ${inputValue}`,
         sender: 'bot',
       };
       setMessages((prevMessages) => [
@@ -47,20 +44,44 @@ const ChatBox = () => {
 
   const handleDragEnd = (event) => {
     const { active, over } = event;
-    if (active.id !== over.id) {
-      const oldIndex = messages.findIndex((msg) => msg.id === active.id);
-      const newIndex = messages.findIndex((msg) => msg.id === over.id);
+    console.log('Active:', active); //for debugging
+    console.log('Over:', over);
 
-      const newMessages = arrayMove(messages, oldIndex, newIndex);
-
-      // Reorder the messages and update the order numbers
-      const reorderedMessages = newMessages.map((msg, index) => ({
-        ...msg,
-        order: index + 1,
-      }));
-
-      setMessages(reorderedMessages);
+    // If active and over are the same, no need to merge
+    if (!over || active.id === over.id) {
+      console.log('No merge needed'); //for debugging
+      return;
     }
+
+    const activeMessage = messages.find((msg) => msg.id === active.id);
+    const overMessage = messages.find((msg) => msg.id === over.id);
+    console.log('Active Message:', activeMessage); //for debugging
+    console.log('Over Message:', overMessage); //for debugging
+
+    // Merge messages
+    const mergedMessage = {
+      ...overMessage,
+      text: `${overMessage.text} ${activeMessage.text}`, // Concatenate the text
+    };
+    console.log('Merged Message:', mergedMessage); //for debugging
+    console.log('Merging at location:', overMessage.order); // Print the order of the target message
+
+    // Remove the active (dragged) message and replace the over (target) message with the merged one
+    const updatedMessages = messages.filter((msg) => msg.id !== active.id).map((msg) => {
+      if (msg.id === over.id) {
+        return mergedMessage; // Replace the target message with the merged one
+      }
+      return msg; // Keep other messages unchanged
+    });
+
+    // Update message order and set the new state
+    const reorderedMessages = updatedMessages.map((msg, index) => ({
+      ...msg,
+      order: index + 1,
+    }));
+    reorderedMessages.forEach(msg => console.log(`Message: ${msg.text}, New Order: ${msg.order}`)); //for debugging
+
+    setMessages(reorderedMessages);
   };
 
   return (
