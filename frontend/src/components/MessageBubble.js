@@ -1,27 +1,24 @@
-// this is the component that renders the message bubbles in the chat window
-
 import React from 'react';
 
-const MessageBubble = ({ message, isActive, isOver }) => {
+const MessageBubble = ({ message, isActive, isOver, isDragging }) => {
   let bubbleClass = message.sender === 'user' 
     ? 'user-message' 
     : message.sender === 'bot' 
       ? 'bot-message' 
       : 'merged-message';
 
-  // Add the dropzone class if the message is being hovered over
-  const dropzoneClass = isOver ? 'dropzone' : '';
+  // Apply the `over-message` class if `isOver` is true and the current message is not the one being dragged (`!isDragging`)
+  // Override the merged-message class with over-message if the message is both merged and being hovered over
+  const dropzoneClass = isOver && !isDragging ? 'over-message' : '';
 
-  if (isOver && !isActive) {
-    console.log('Message is being hovered over (potential drop target)');
-  }
+  // Add a blue background when the message is being dragged, unless it's already green (merged)
+  const draggingClass = isDragging && !message.isMerged ? 'dragging' : '';
 
-  if (isActive) {
-    console.log('Message is being dragged');
-  }
+  // If the message is merged, keep it green even when dragging
+  const mergedClass = message.isMerged ? 'merged-message' : '';
 
   return (
-    <div className={`message-bubble ${bubbleClass} ${dropzoneClass}`}>
+    <div className={`message-bubble ${bubbleClass} ${dropzoneClass} ${draggingClass} ${mergedClass}`}>
       {message.text}
     </div>
   );

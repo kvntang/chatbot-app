@@ -100,23 +100,20 @@ button:hover {
   background-color: #357ab7; 
 }
 
-.merged-message {
-  background-color: #e6f3ff;
-  color: #333;
-  border: 2px dashed #4a90e2;
-}
 
-.message-bubble.dropzone {
-  background-color: #4a90e2;
+
+.dragging {
+  background-color: rgb(0, 132, 255);
   color: white;
-  transition: background-color 0.3s ease;
 }
 
+/* Color change when hovering (isOver) */
+.over-message {
+  background-color: rgb(0, 132, 255); /* Change this to the color you want */
+  color: white;
+}
 
-.user-message.dropzone,
-.bot-message.dropzone,
-.merged-message.dropzone {
-  border: 2px dashed #007bff;
-  background-color: rgba(0, 123, 255, 0.1);
-  transition: all 0.3s ease;
+.merged-message {
+  background-color: rgb(0, 201, 20);
+  color: black;
 }
