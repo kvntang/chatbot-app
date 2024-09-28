@@ -117,6 +117,36 @@ const ChatBox = () => {
     return updatedMessages;
   };
 
+  // Auto-generate new messages with delay
+  const generateFutureUserMessage = (index) => {
+    setTimeout(() => {
+      const newUserMessage = {
+        id: Date.now().toString() + index,
+        text: `Alternate timeline message ${index + 1}`,
+        sender: 'user',
+      };
+
+      setMessages(prevMessages => {
+        const updatedMessages = [...prevMessages, newUserMessage];
+        return updateMessageOrder(updatedMessages);
+      });
+    }, 500); // Add a delay for the user message
+  };
+
+  const generateFutureBotMessage = (index) => {
+    setTimeout(() => {
+      const botReply = {
+        id: (Date.now() + 1).toString() + index,
+        text: `Bot reply to: Alternate timeline message ${index}`,
+        sender: 'bot',
+      };
+
+      setMessages(prevMessages => {
+        const updatedMessages = [...prevMessages, botReply];
+        return updateMessageOrder(updatedMessages);
+      });
+    }, 500); // Delay for bot response
+  };
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   const handleDragEnd = (event) => {
@@ -152,48 +182,25 @@ const ChatBox = () => {
     // Update the display by setting the new messages
     setMessages(updateMessageOrder(reorderedMessages));
 
-    // Auto-generate new messages with delay
-    const generateMessagesWithDelay = (index) => {
-      if (index >= Math.max(1, remove) / 2) return;
-
-      setTimeout(() => {
-        const newUserMessage = {
-          id: Date.now().toString() + index,
-          text: `Alternate timeline message ${index + 1}`,
-          sender: 'user',
-        };
-
-        setMessages(prevMessages => {
-          const updatedMessages = [...prevMessages, newUserMessage];
-          return updateMessageOrder(updatedMessages);
-        });
-
-        // Simulate bot response with additional delay only if remove > 1
-        if (remove > 1) {
-          setTimeout(() => {
-            const botReply = {
-              id: (Date.now() + 1).toString() + index,
-              text: `Bot reply to: Alternate timeline message ${index + 1}`,
-              sender: 'bot',
-            };
-
-            setMessages(prevMessages => {
-              const updatedMessages = [...prevMessages, botReply];
-              return updateMessageOrder(updatedMessages);
-            });
-
-            // Generate next message pair
-            generateMessagesWithDelay(index + 1);
-          }, 500); // Delay for bot response
-        } else {
-          // If remove is 1, don't generate bot response and stop here
-          return;
-        }
-      }, 1000); // Delay for user message
-    };
+    //get how many messages need to be generated
+    const generateAmount = remove;
+    console.log("Insertion at:", insertionIndex);
+    console.log("need to generate:", remove);
 
     // Start generating messages with delay
-    generateMessagesWithDelay(0);
+    const baseIndex = reorderedMessages.length;
+    let generatedCount = 0;
+    let i = 0;
+    while (generatedCount < generateAmount) {
+      if (generatedCount % 2 === 0) {
+        generateFutureUserMessage(baseIndex + i);
+      } else {
+        generateFutureBotMessage(baseIndex + i);
+      }
+      generatedCount++;
+      i++;
+    }
+
 
     //print it
     console.log("New order:", reorderedMessages.map((msg, index) => ({
