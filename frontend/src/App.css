@@ -33,6 +33,7 @@ body {
 .messages-container {
   height: 600px; 
   overflow-y: auto;
+  overflow-x: hidden;
   padding: 16px;
   border-bottom: 1px solid #e0e0e0;
 }
@@ -116,4 +117,22 @@ button:hover {
 .merged-message {
   background-color: rgb(0, 201, 20);
   color: black;
+}
+
+.deprecated-message {
+  background-color:#767676;
+  color:#555;
+}
+
+#trash-drop {
+  /* on drag, make it display */
+  display:block;
+  position:absolute;  
+  max-width: 650px;
+  width:50%;
+  height:50px;
+  bottom:150px;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: #fff; 
+  text-align: center;
 }
