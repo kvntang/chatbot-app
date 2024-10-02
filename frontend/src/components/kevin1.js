@@ -130,7 +130,7 @@ const ChatBox = () => {
         const updatedMessages = [...prevMessages, newUserMessage];
         return updateMessageOrder(updatedMessages);
       });
-    }, 500); // Add a delay for the user message
+    }, 1000); // Add a delay for the user message
   };
 
   const generateFutureBotMessage = (index) => {
@@ -145,7 +145,7 @@ const ChatBox = () => {
         const updatedMessages = [...prevMessages, botReply];
         return updateMessageOrder(updatedMessages);
       });
-    }, 500); // Delay for bot response
+    }, 1000); // Delay for bot response
   };
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
