@@ -81,51 +81,58 @@ const ChatBox = () => {
 
   const handleSendMessage = async () => {
     if (inputValue.trim() === '') return;
-
+  
     const newMessage = {
       id: Date.now().toString(),
       text: inputValue,
       sender: 'user',
     };
 
+    
+    const fetchGenericBotResponse = async (messages, inputValue) => {
+      // Create the message history with roles for ChatGPT
+      const messageHistory = [
+        ...messages.map((msg) => ({ role: msg.sender === 'user' ? 'user' : 'assistant', content: msg.text })),
+        { role: 'user', content: inputValue }, // Add the new message to the history
+      ];
+    
+      try {
+        // Send the user message and previous messages to the backend
+        const response = await axios.post('http://localhost:3001/api/generic_bot', {
+          messageHistory, // Send the full context including previous messages
+        });
+    
+        // Return the bot's reply from the response
+        return {
+          id: (Date.now() + 1).toString(),
+          text: response.data.reply, // Use the reply from the backend
+          sender: 'bot',
+        };
+      } catch (error) {
+        console.error('Error fetching reply from the backend:', error);
+        return null; // Return null if there's an error
+      }
+    };    
+  
     setMessages((prevMessages) => [
       ...prevMessages,
       { ...newMessage, order: prevMessages.length + 1 },
     ]);
-
+  
     setInputValue(''); // Clear input field after message is sent
-
-    // Create the message history with roles for ChatGPT
-    const messageHistory = [
-      ...messages.map((msg) => ({ role: msg.sender === 'user' ? 'user' : 'assistant', content: msg.text })),
-      { role: 'user', content: inputValue }, // Add the new message to the history
-    ];
-
-
-    try {
-      // Send the user message and previous messages to the backend
-      const response = await axios.post('http://localhost:3001/api/generic_bot', {
-        messageHistory, // Send the full context including previous messages
-      });
-
-      // Get the bot's reply from the response
-      const botReply = {
-        id: (Date.now() + 1).toString(),
-        text: response.data.reply, // Use the reply from the backend
-        sender: 'bot',
-      };
-
+  
+    // Fetch the bot's reply by calling the new function
+    const genericBotReply = await fetchGenericBotResponse(messages, inputValue);
+  
+    if (genericBotReply) {
       // Update the messages state with the bot's reply
       setMessages((prevMessages) => [
         ...prevMessages,
-        { ...botReply, order: prevMessages.length + 1 },
+        { ...genericBotReply, order: prevMessages.length + 1 },
       ]);
-    } catch (error) {
-      console.error('Error fetching reply from the backend:', error);
-    } finally {
-
     }
   };
+
 
   const updateMessageOrder = (messages) => {
     return messages.map((msg, index) => ({
@@ -155,6 +162,12 @@ const ChatBox = () => {
 
   // Auto-generate new messages with delay
   const generateFutureUserMessage = (index) => {
+
+    //TO-DO: replace with GPT repsonse
+
+    // fetchFutureUserResponse ...
+
+
     setTimeout(() => {
       const newUserMessage = {
         id: Date.now().toString() + index,
@@ -170,6 +183,11 @@ const ChatBox = () => {
   };
 
   const generateFutureBotMessage = (index) => {
+
+    //TO-DO: replace with GPT repsonse
+
+    // fetchFutureBotResponse ...
+
     setTimeout(() => {
       const botReply = {
         id: (Date.now() + 1).toString() + index,
