@@ -1,9 +1,9 @@
 body {
-  font-family: 'Inter', sans-serif; 
+  font-family: 'Inter', sans-serif;
   margin: 0;
   padding: 0;
   background-color: #f7f8fa;
-  color: #333; 
+  color: #333;
 }
 
 .app {
@@ -20,20 +20,19 @@ body {
 .app-header h1 {
   color: #222;
   font-weight: 600;
-  font-size: 24px; 
+  font-size: 24px;
 }
 
 .chat-box {
-  background-color: #ffffff;
+  background-color: #fff;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); 
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   overflow: hidden;
 }
 
 .messages-container {
-  height: 600px; 
+  height: 600px;
   overflow-y: auto;
-  overflow-x: hidden;
   padding: 16px;
   border-bottom: 1px solid #e0e0e0;
 }
@@ -48,18 +47,18 @@ body {
 }
 
 .user-message {
-  background-color: #000000; 
-  color: white;
+  background-color: #000;
+  color: #fff;
   margin-left: auto;
   align-self: flex-end;
-  border-radius: 12px 12px 0 12px; 
+  border-radius: 12px 12px 0 12px;
 }
 
 .bot-message {
   background-color: #f0f0f0;
   color: #555;
   align-self: flex-start;
-  border-radius: 12px 12px 12px 0; /* this is the corner of textbubbles */
+  border-radius: 12px 12px 12px 0;
 }
 
 .input-container {
@@ -82,14 +81,14 @@ input[type="text"] {
 }
 
 input[type="text"]:focus {
-  border-color: #4a90e2; 
+  border-color: #4a90e2;
   outline: none;
 }
 
 button {
   padding: 10px 16px;
-  background-color: #080808;
-  color: white;
+  background-color: #000;
+  color: #fff;
   border: none;
   border-radius: 8px;
   font-size: 14px;
@@ -98,41 +97,42 @@ button {
 }
 
 button:hover {
-  background-color: #357ab7; 
+  background-color: #357ab7;
 }
-
-
 
 .dragging {
   background-color: rgb(0, 132, 255);
-  color: white;
+  color: #fff;
 }
 
-/* Color change when hovering (isOver) */
 .over-message {
-  background-color: rgb(0, 132, 255); /* Change this to the color you want */
-  color: white;
+  background-color: rgb(0, 132, 255);
+  color: #fff;
 }
 
 .merged-message {
   background-color: rgb(0, 201, 20);
-  color: black;
+  color: #000;
 }
 
 .deprecated-message {
-  background-color:#767676;
-  color:#555;
+  background-color: #767676;
+  color: #555;
 }
 
 #trash-drop {
-  /* on drag, make it display */
-  display:block;
-  position:absolute;  
+  display: block;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   max-width: 650px;
-  width:50%;
-  height:50px;
-  bottom:150px;
+  width: 50%;
+  height: 50px;
+  bottom: 150px;
   background-color: rgba(0, 0, 0, 0.6);
-  color: #fff; 
+  color: #fff;
   text-align: center;
+  line-height: 50px;
+  z-index: 1;
 }
+

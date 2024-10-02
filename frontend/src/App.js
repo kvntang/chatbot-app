@@ -4,7 +4,7 @@ import React from 'react';
 
 // import the ChatBox component; change the chatbot file to your own!! 
 // make sure to save the iterations
-import ChatBox from './components/zach1';
+import ChatBox from './components/kevin_gpt1';
 import './App.css';
 
 const App = () => {
