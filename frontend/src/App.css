@@ -1,9 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Overpass+Mono:wght@300..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Overpass+Mono:wght@300..700&display=swap');
+
 body {
-  font-family: 'Inter', sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #f7f8fa;
+  background-color: ##F9F4F1;
   color: #333;
+  font-family: Overpass Mono;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 20px;
+  text-align: left;
+  font-family: "Overpass Mono", monospace;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
 }
 
 .app {
@@ -15,18 +26,27 @@ body {
 .app-header {
   text-align: center;
   margin-bottom: 20px;
+  display:block;
+  position:fixed;
+  top:1em;
+  width:100vw;
+  left:0;
 }
 
 .app-header h1 {
-  color: #222;
-  font-weight: 600;
-  font-size: 24px;
+  font-family: "Nanum Myeongjo", serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 48px;
+  line-height: 60px;
+  text-align: center;
+  color:#000000;
 }
 
 .chat-box {
   background-color: #fff;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); */
   overflow: hidden;
 }
 
@@ -50,18 +70,19 @@ body {
 }
 
 .user-message {
-  background-color: #000;
-  color: #fff;
-  margin-left: auto;
-  align-self: flex-end;
-  border-radius: 12px 12px 0 12px;
+  background: #E9E1D8;
+  color: #000000;
+  width:100%;
+  /* align-self: flex-end; */
+  border-radius: 5px;
 }
 
 .bot-message {
-  background-color: #f0f0f0;
-  color: #555;
-  align-self: flex-start;
-  border-radius: 12px 12px 12px 0;
+  background-color: #E9E1D8;
+  color: #000000;
+  /* align-self: flex-start; */
+  border-radius: 5px;
+  width:100%;
 }
 
 .input-container {
@@ -74,7 +95,7 @@ body {
 input[type="text"] {
   flex-grow: 1;
   padding: 12px;
-  border: 1px solid #d9d9d9;
+  border: 2px solid #E9E1D8;
   border-radius: 8px;
   background-color: #f7f8fa;
   font-size: 14px;
@@ -84,14 +105,14 @@ input[type="text"] {
 }
 
 input[type="text"]:focus {
-  border-color: #4a90e2;
+  border-color: #5EDEEE;
   outline: none;
 }
 
 button {
   padding: 10px 16px;
-  background-color: #000;
-  color: #fff;
+  background-color: #E9E1D8;
+  color: #000000;
   border: none;
   border-radius: 8px;
   font-size: 14px;
@@ -100,18 +121,16 @@ button {
 }
 
 button:hover {
-  background-color: #357ab7;
+  background-color: #5EDEEE;
 }
 
 .dragging {
   opacity: 0.5; /* Make the dragged item semi-transparent */
-  background-color: rgb(0, 132, 255);
-  color: #fff;
+  background-color: #5EDEEE;
 }
 
 .merged-message {
-  background-color: rgb(0, 201, 20);
-  color: #000;
+  background-color: #E0E03E;
 }
 
 #trash-drop {
