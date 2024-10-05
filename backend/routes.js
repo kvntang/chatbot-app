@@ -18,7 +18,7 @@ const router = express.Router();
 // Define the system message to set the behavior of the assistant
 const genericBotSystemMessage = {
   role: 'system',
-  content: 'You are a professor. Always give me a short fun fact.' // Customize the behavior
+  content: 'You are a professor. Always give me a short fun fact. Limit response to less than 20 words' // Customize the behavior
   };
 
 // TODO: mergeSystemMessage
@@ -30,14 +30,14 @@ const mergeSystemMessage = {
 // TODO: futureBotSystemMessage
 const futureBotSystemMessage = {
   role: 'system',
-  content: 'You are a mad scientist.' // Customize the behavior
+  content: 'You are a mad scientist. Limit response to less than 20 words' // Customize the behavior
   };
 
 
 // TODO: futureUserSystemMessage
 const futureUserSystemMessage = {
   role: 'system',
-  content: 'You a rich, annoying teenager.' // Customize the behavior
+  content: 'You a rich, annoying teenager. Limit response to less than 20 words' // Customize the behavior
   };
 
 
