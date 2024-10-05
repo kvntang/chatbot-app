@@ -43,7 +43,7 @@ function TrashCan() {
 
   return (
     <div id="trash-drop" ref={setNodeRef} className="trash-can">
-      🗑️ Trash
+      <img src="./trash.svg">
     </div>
   );
 }

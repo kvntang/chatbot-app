@@ -29,8 +29,11 @@ body {
   display:block;
   position:fixed;
   top:1em;
+  padding-bottom: 2em;
   width:100vw;
   left:0;
+  /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#f9f4f1+0,ffffff+100&1+0,0+100 */
+  background: linear-gradient(to bottom,  rgba(249,244,241,1) 0%,rgba(255,255,255,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 }
 
 .app-header h1 {
@@ -111,10 +114,10 @@ input[type="text"]:focus {
 
 button {
   padding: 10px 16px;
-  background-color: #E9E1D8;
+  background-color: transparent;
   color: #000000;
-  border: none;
-  border-radius: 8px;
+  border: #E9E1D8;
+  border-radius: 1000px;
   font-size: 14px;
   cursor: pointer;
   transition: background-color 0.2s ease;
@@ -136,17 +139,20 @@ button:hover {
 #trash-drop {
   display: block;
   position: fixed; /* Fixed position to stay in place */
-  left: 50%;
-  transform: translateX(-50%);
-  max-width: 650px;
-  width: 50%;
-  height: 50px;
-  bottom: 150px;
-  background-color: rgba(0, 0, 0, 0.6);
-  color: #fff;
+  width: 129px;
+  height: 129px;
+  left:20vw;
+  top:40vh;
+  bottom: auto;
+  background-color: transparent;
   text-align: center;
-  line-height: 50px;
   z-index: 1000;
+  border-radius: 1000px;
+}
+
+.trash-drop:hover {
+  background-color: #C3B8AB;
+  color: #fff;
 }
 
 /* Remove any styles that could affect the height during dragging */
