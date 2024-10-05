@@ -5,12 +5,16 @@ import {
   rectIntersection,
   useDroppable,
 } from '@dnd-kit/core';
-import { SortableContext, arrayMove } from '@dnd-kit/sortable';
+import {
+  SortableContext,
+  arrayMove,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import axios from 'axios';
 
-const MessageBubble = ({ message, isOver, isDragging }) => {
+const MessageBubble = ({ message, isDragging }) => {
   if (!message) {
     return null;
   }
@@ -22,14 +26,11 @@ const MessageBubble = ({ message, isOver, isDragging }) => {
       ? 'bot-message'
       : 'merged-message';
 
-  const dropzoneClass = isOver && !isDragging ? 'over-message' : '';
   const draggingClass = isDragging && !message.isMerged ? 'dragging' : '';
   const mergedClass = message.isMerged ? 'merged-message' : '';
 
   return (
-    <div
-      className={`message-bubble ${bubbleClass} ${dropzoneClass} ${draggingClass} ${mergedClass}`}
-    >
+    <div className={`message-bubble ${bubbleClass} ${draggingClass} ${mergedClass}`}>
       {message.text}
     </div>
   );
@@ -56,24 +57,24 @@ const SortableMessageBubble = ({ message, activeId }) => {
     transform,
     transition,
     isOver,
-  } = useSortable({ id: message.id });
+  } = useSortable({
+    id: message.id,
+    animateLayoutChanges: () => false, // Disable layout animations
+  });
 
   const style = useMemo(
     () => ({
       transform: CSS.Transform.toString(transform),
       transition,
-      opacity: message.id === activeId ? 0 : 1, // Hide the item if it's being dragged
+      opacity: message.id === activeId ? 0 : 1, // how transparent we want the bubble when dragging
+      zIndex: message.id === activeId ? 1000 : 'auto',
     }),
     [transform, transition, activeId, message.id]
   );
 
   return (
     <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      <MessageBubble
-        message={message}
-        isDragging={message.id === activeId}
-        isOver={isOver}
-      />
+      <MessageBubble message={message} isDragging={message.id === activeId} />
     </div>
   );
 };
@@ -201,16 +202,21 @@ const ChatBox = () => {
     };
 
     // Keep messages before the merged message
-    const messagesBeforeMerged = messages.slice(0, Math.min(activeIndex, overIndex));
+    const messagesBeforeMerged = messages.slice(
+      0,
+      Math.min(activeIndex, overIndex)
+    );
 
-    // Determine how many new messages to generate THIS MIGHT NEED TO CHANGE!!!
-    const messagesToGenerateCount = messages.length - messagesBeforeMerged.length - 2;
+    // Determine how many new messages to generate
+    const messagesToGenerateCount =
+      messages.length - messagesBeforeMerged.length - 2;
 
     // Generate new messages
     const startingSender = getOppositeSender(mergedMessage.sender);
     const newReplies = [];
     for (let i = 0; i < messagesToGenerateCount; i++) {
-      const sender = i % 2 === 0 ? startingSender : getOppositeSender(startingSender);
+      const sender =
+        i % 2 === 0 ? startingSender : getOppositeSender(startingSender);
       const newMessage = {
         id: (Date.now() + i).toString(),
         text: `new message ${i + 1}`,
@@ -220,7 +226,11 @@ const ChatBox = () => {
     }
 
     // Assemble the updated messages
-    const updatedMessages = [...messagesBeforeMerged, mergedMessage, ...newReplies];
+    const updatedMessages = [
+      ...messagesBeforeMerged,
+      mergedMessage,
+      ...newReplies,
+    ];
 
     return updatedMessages;
   };
@@ -282,7 +292,10 @@ const ChatBox = () => {
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
       >
-        <SortableContext items={messages.map((message) => message.id)}>
+        <SortableContext
+          items={messages.map((message) => message.id)}
+          strategy={verticalListSortingStrategy} // Use vertical list sorting strategy
+        >
           <div className="messages-container">
             {messages.map((message) => (
               <SortableMessageBubble
@@ -300,11 +313,8 @@ const ChatBox = () => {
           {activeId ? (
             messages.find((message) => message.id === activeId) ? (
               <MessageBubble
-                message={messages.find(
-                  (message) => message.id === activeId
-                )}
+                message={messages.find((message) => message.id === activeId)}
                 isDragging={true}
-                isOver={false}
               />
             ) : null
           ) : null}
