@@ -185,6 +185,8 @@ const ChatBox = () => {
         messageHistory,
       });
 
+      console.log("rich kid mode");
+
       return {
         id: Date.now().toString(),
         text: response.data.reply, // Adjust based on your API's response structure
