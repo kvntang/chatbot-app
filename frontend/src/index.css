@@ -11,3 +11,64 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* Fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Apply animation to text bubbles */
+.message-bubble {
+  animation: fadeIn 0.5s ease-in;
+}
+
+/* Style for User Message Bubble */
+.user-message {
+  background-color: #cce7ff; /* Light blue background for user messages */
+  color: #000;               /* Black text color */
+  border-radius: 15px;       /* Rounded corners */
+  padding: 10px;             /* Padding inside the bubble */
+  margin: 5px;               /* Margin between bubbles */
+  max-width: 70%;            /* Limit the width of the bubble */
+  align-self: flex-start;    /* Aligns user messages to the left side */
+}
+
+/* Style for Bot Message Bubble */
+.bot-message {
+  background-color: #ffdfba; /* Light orange background for bot messages */
+  color: #000;               /* Black text color */
+  border-radius: 15px;       /* Rounded corners */
+  padding: 10px;             /* Padding inside the bubble */
+  margin: 5px;               /* Margin between bubbles */
+  max-width: 70%;            /* Limit the width of the bubble */
+  align-self: flex-end;      /* Aligns bot messages to the right side */
+}
+
+/* Style for Merged Message Bubble (Optional) */
+.merged-message {
+  border: 2px dashed #888;   /* Dashed border to visually indicate merged content */
+  padding: 10px;             /* Same padding as user/bot messages */
+}
+
+/* Style for "Thinking..." Placeholder */
+.thinking-bubble {
+  background-color: #e0e0e0; /* Gray background for "thinking..." message */
+  font-style: italic;        /* Italic text to differentiate */
+  opacity: 0.8;              /* Slight transparency for visual effect */
+  border-radius: 15px;       /* Rounded corners */
+  padding: 10px;             /* Padding inside the bubble */
+  margin: 5px;               /* Margin between bubbles */
+  max-width: 70%;            /* Limit the width of the bubble */
+  align-self: center;        /* Center the "thinking..." message */
+}
+
+/* Style for Dragging State (Optional) */
+.dragging {
+  opacity: 0.5;              /* Make the message transparent while dragging */
+  transform: scale(1.05);    /* Slightly enlarge the bubble for visual feedback */
+}

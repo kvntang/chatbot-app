@@ -73,7 +73,7 @@ body {
 }
 
 .user-message {
-  background: #E9E1D8;
+  background: #cce7ff;
   color: #000000;
   width:100%;
   /* align-self: flex-end; */
@@ -81,7 +81,7 @@ body {
 }
 
 .bot-message {
-  background-color: #E9E1D8;
+  background-color: #fff3e4;
   color: #000000;
   /* align-self: flex-start; */
   border-radius: 5px;
@@ -133,7 +133,7 @@ button:hover {
 }
 
 .merged-message {
-  background-color: #E0E03E;
+  background-color: #e7d8fc;
 }
 
 #trash-drop {

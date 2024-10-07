@@ -14,30 +14,28 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import axios from 'axios';
 
-// MessageBubble Component
-const MessageBubble = ({ message, isDragging }) => {
-  if (!message) {
-    return null;
-  }
-
-  let bubbleClass =
-    message.sender === 'user'
-      ? 'user-message'
-      : message.sender === 'bot'
-      ? 'bot-message'
-      : 'merged-message';
-
-  const draggingClass = isDragging && !message.isMerged ? 'dragging' : '';
-  const mergedClass = message.isMerged ? 'merged-message' : '';
-
-  return (
-    <div
-      className={`message-bubble ${bubbleClass} ${draggingClass} ${mergedClass}`}
-    >
-      {message.text}
-    </div>
-  );
-};
+ 
+  // Determine the CSS class based on the sender of the message
+ 
+  const MessageBubble = ({ message, isDragging }) => {
+    if (!message) {
+      return null;
+    }
+  
+    // Determine the CSS class based on the sender of the message
+    const bubbleClass = message.sender === 'user' ? 'user-message' : 'bot-message';
+  
+    // Handle extra classes for dragging or merged messages
+    const draggingClass = isDragging && !message.isMerged ? 'dragging' : '';
+    const mergedClass = message.isMerged ? 'merged-message' : '';
+  
+    return (
+      <div className={`message-bubble ${bubbleClass} ${draggingClass} ${mergedClass}`}>
+        {message.text}
+      </div>
+    );
+  };
+  
 
 // TrashCan Component
 function TrashCan() {
@@ -393,7 +391,7 @@ const ChatBox = () => {
             ) : null
           ) : null}
         </DragOverlay>
-      </DndContext>
+        </DndContext>
       <div className="input-container">
         <input
           type="text"
@@ -404,8 +402,10 @@ const ChatBox = () => {
         />
         <button onClick={handleSendMessage}>Send</button>
       </div>
-    </div>
-  );
-};
+    </div> // Closing div for ChatBox root
+
+  ); // Closing the return of ChatBox
+
+}; // End of ChatBox function
 
 export default ChatBox;

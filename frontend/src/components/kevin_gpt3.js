@@ -238,12 +238,52 @@ const ChatBox = () => {
       activeMessage.text
     );
 
-    const mergedMessage = {
-      ...overMessage,
-      text: mergedText,
-      isMerged: true,
-    };
+ // Determine the alternating sender for the new merged message
+const previousSender = overMessage.sender;
+const newSender = previousSender === 'user' ? 'bot' : 'user';
 
+// Create the final merged message with alternating sender
+const mergedMessage = {
+    ...overMessage,
+    text: mergedText,
+    sender: newSender,  // Alternate sender between user and bot
+    isMerged: true,
+};
+
+    
+// Add a "thinking..." placeholder message
+const thinkingMessage = {
+  id: Date.now().toString(),  // Generate a unique ID for the message
+  text: "Thinking...",        // Placeholder text
+  sender: "bot",              // Set explicitly as "bot" to make sure it has a consistent sender
+  isThinking: true,           // Flag to indicate it's a temporary placeholder
+};
+
+// Set the updated messages with the "thinking..." bubble
+setMessages((prevMessages) => [
+  ...prevMessages.filter((msg) => msg.id !== activeId && msg.id !== overId),
+  thinkingMessage,
+]);
+
+
+// Wait for a brief period before replacing with the generated content
+await new Promise((resolve) => setTimeout(resolve, 1000)); // 1 second delay
+
+// Remove "thinking..." and add merged message with new responses
+setMessages((prevMessages) => {
+  // Remove the "thinking..." message and add the new merged response
+  return [
+    ...prevMessages.filter((msg) => !msg.isThinking),
+    mergedMessage,
+  ];
+});
+
+return [
+  ...messages.slice(0, Math.min(activeIndex, overIndex)),
+  mergedMessage,
+];
+
+};
     // Keep messages before the merged message
     const messagesBeforeMerged = messages.slice(
       0,
@@ -333,6 +373,7 @@ const ChatBox = () => {
     else {
       const activeIndex = messages.findIndex((msg) => msg.id === active.id);
       const overIndex = messages.findIndex((msg) => msg.id === over.id);
+      
 
       const isOverThreshold =
         over.rect.top + over.rect.height * 0.7 >
