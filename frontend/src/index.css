@@ -29,13 +29,13 @@ code {
 
 /* Style for User Message Bubble */
 .user-message {
-  background-color: #cce7ff; /* Light blue background for user messages */
-  color: #000;               /* Black text color */
-  border-radius: 15px;       /* Rounded corners */
-  padding: 10px;             /* Padding inside the bubble */
-  margin: 5px;               /* Margin between bubbles */
-  max-width: 70%;            /* Limit the width of the bubble */
-  align-self: flex-start;    /* Aligns user messages to the left side */
+  background-color: #cce7ff; 
+  color: #000;               
+  border-radius: 15px;       
+  padding: 10px;             
+  margin: 5px;               
+  max-width: 70%;            
+  align-self: flex-start;    
 }
 
 /* Style for Bot Message Bubble */
