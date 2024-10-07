@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import {
   DndContext,
   DragOverlay,
@@ -7,35 +7,32 @@ import {
 } from '@dnd-kit/core';
 import {
   SortableContext,
-  arrayMove,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import axios from 'axios';
 
- 
+// MessageBubble Component
+const MessageBubble = ({ message, isDragging, isHovered }) => {
+  if (!message) {
+    return null;
+  }
+
   // Determine the CSS class based on the sender of the message
- 
-  const MessageBubble = ({ message, isDragging }) => {
-    if (!message) {
-      return null;
-    }
-  
-    // Determine the CSS class based on the sender of the message
-    const bubbleClass = message.sender === 'user' ? 'user-message' : 'bot-message';
-  
-    // Handle extra classes for dragging or merged messages
-    const draggingClass = isDragging && !message.isMerged ? 'dragging' : '';
-    const mergedClass = message.isMerged ? 'merged-message' : '';
-  
-    return (
-      <div className={`message-bubble ${bubbleClass} ${draggingClass} ${mergedClass}`}>
-        {message.text}
-      </div>
-    );
-  };
-  
+  const bubbleClass = message.sender === 'user' ? 'user-message' : 'bot-message';
+
+  // Handle extra classes for dragging, merged, or hovered messages
+  const draggingClass = isDragging && !message.isMerged ? 'dragging' : '';
+  const mergedClass = message.isMerged ? 'merged-message' : '';
+  const hoveredClass = isHovered ? 'hovered' : '';
+
+  return (
+    <div className={`message-bubble ${bubbleClass} ${draggingClass} ${mergedClass} ${hoveredClass}`}>
+      {message.text}
+    </div>
+  );
+};
 
 // TrashCan Component
 function TrashCan() {
@@ -45,13 +42,13 @@ function TrashCan() {
 
   return (
     <div id="trash-drop" ref={setNodeRef} className="trash-can">
-      🗑️ Trash
+      🍂 Forget
     </div>
   );
 }
 
 // SortableMessageBubble Component
-const SortableMessageBubble = ({ message, activeId }) => {
+const SortableMessageBubble = ({ message, activeId, overId }) => {
   const {
     attributes,
     listeners,
@@ -73,9 +70,16 @@ const SortableMessageBubble = ({ message, activeId }) => {
     [transform, transition, activeId, message.id]
   );
 
+  // Determine if the message is being hovered over
+  const isHovered = message.id === overId && activeId;
+
   return (
     <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      <MessageBubble message={message} isDragging={message.id === activeId} />
+      <MessageBubble
+        message={message}
+        isDragging={message.id === activeId}
+        isHovered={isHovered}
+      />
     </div>
   );
 };
@@ -87,6 +91,15 @@ const ChatBox = () => {
 
   // State for tracking the active draggable item
   const [activeId, setActiveId] = useState(null);
+  const [overId, setOverId] = useState(null); // New state for hovered item
+
+  // Ref for the messages end
+  const messagesEndRef = useRef(null);
+
+  // Auto-scroll to the bottom when messages change
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
@@ -188,7 +201,7 @@ const ChatBox = () => {
         messageHistory,
       });
 
-      console.log("rich kid mode");
+      console.log('Generating future user message');
 
       return {
         id: Date.now().toString(),
@@ -225,7 +238,7 @@ const ChatBox = () => {
     }
   };
 
-  // Updated mergeAndUpdateMessages function
+  // Function to merge and update messages
   const mergeAndUpdateMessages = async (messages, activeId, overId) => {
     const activeIndex = messages.findIndex((msg) => msg.id === activeId);
     const overIndex = messages.findIndex((msg) => msg.id === overId);
@@ -255,7 +268,7 @@ const ChatBox = () => {
 
     // Determine how many new messages to generate
     const messagesToGenerateCount =
-      messages.length - messagesBeforeMerged.length - 2; // Adjusted to -1 to account for merged message being removed,, MIGHT NEED TO -2!!
+      messages.length - messagesBeforeMerged.length - 2;
 
     // Generate new messages asynchronously
     const startingSender = getOppositeSender(mergedMessage.sender);
@@ -313,10 +326,21 @@ const ChatBox = () => {
     setActiveId(active.id);
   };
 
+  // New handleDragOver function
+  const handleDragOver = (event) => {
+    const { over } = event;
+    if (over) {
+      setOverId(over.id);
+    } else {
+      setOverId(null);
+    }
+  };
+
   const handleDragEnd = async (event) => {
     const { active, over } = event;
 
     setActiveId(null);
+    setOverId(null); // Reset overId when drag ends
 
     if (!over || active.id === over.id) {
       return;
@@ -334,24 +358,12 @@ const ChatBox = () => {
     }
     // If dropped over another message, merge them
     else {
-      const activeIndex = messages.findIndex((msg) => msg.id === active.id);
-      const overIndex = messages.findIndex((msg) => msg.id === over.id);
-
-      const isOverThreshold =
-        over.rect.top + over.rect.height * 0.7 >
-        active.rect.current.translated.top;
-
-      if (isOverThreshold) {
-        // Merge messages and generate new ones via API
-        reorderedMessages = await mergeAndUpdateMessages(
-          messages,
-          active.id,
-          over.id
-        );
-      } else {
-        // Simple reorder
-        reorderedMessages = arrayMove(messages, activeIndex, overIndex);
-      }
+      // Merge messages and generate new ones via API
+      reorderedMessages = await mergeAndUpdateMessages(
+        messages,
+        active.id,
+        over.id
+      );
 
       setMessages(updateMessageOrder(reorderedMessages));
     }
@@ -362,11 +374,12 @@ const ChatBox = () => {
       <DndContext
         collisionDetection={rectIntersection}
         onDragStart={handleDragStart}
+        onDragOver={handleDragOver} // Added this line
         onDragEnd={handleDragEnd}
       >
         <SortableContext
           items={messages.map((message) => message.id)}
-          strategy={verticalListSortingStrategy} // Use vertical list sorting strategy
+          strategy={verticalListSortingStrategy}
         >
           <div className="messages-container">
             {messages.map((message) => (
@@ -374,9 +387,11 @@ const ChatBox = () => {
                 key={message.id}
                 message={message}
                 activeId={activeId}
+                overId={overId} // Pass overId to SortableMessageBubble
               />
             ))}
-
+            {/* Scroll Anchor */}
+            <div ref={messagesEndRef} />
             {/* Render trash can if something is being dragged */}
             {activeId && <TrashCan />}
           </div>
@@ -391,7 +406,7 @@ const ChatBox = () => {
             ) : null
           ) : null}
         </DragOverlay>
-        </DndContext>
+      </DndContext>
       <div className="input-container">
         <input
           type="text"
@@ -402,10 +417,8 @@ const ChatBox = () => {
         />
         <button onClick={handleSendMessage}>Send</button>
       </div>
-    </div> // Closing div for ChatBox root
-
-  ); // Closing the return of ChatBox
-
-}; // End of ChatBox function
+    </div>
+  );
+};
 
 export default ChatBox;
