@@ -42,7 +42,7 @@ const futureUserSystemMessage = {
 
 
 // 1. POST GenericBot //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-router.post('/api/generic_bot', async (req, res) => {
+router.post('/generic_bot', async (req, res) => {
   const messageHistory = req.body.messageHistory; // Extract the message history from the request body
   const API_KEY = process.env.OPENAI_API_KEY; // Load the OpenAI API key from environment variables
 
@@ -78,7 +78,7 @@ router.post('/api/generic_bot', async (req, res) => {
 
 
 // 2. POST  Merge Message  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-router.post('/api/merge', async (req, res) => {
+router.post('/merge', async (req, res) => {
   const messageHistory = req.body.messageHistory; // Extract the message history from the request body
   const API_KEY = process.env.OPENAI_API_KEY; // Load the OpenAI API key from environment variables
 
@@ -114,7 +114,7 @@ router.post('/api/merge', async (req, res) => {
 
 
 // 3. POST FutureBot //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-router.post('/api/bot', async (req, res) => {
+router.post('/bot', async (req, res) => {
   const messageHistory = req.body.messageHistory; // Extract the message history from the request body
   const API_KEY = process.env.OPENAI_API_KEY; // Load the OpenAI API key from environment variables
 
@@ -151,7 +151,7 @@ router.post('/api/bot', async (req, res) => {
 
 
 // 3. POST FutureUser //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-router.post('/api/user', async (req, res) => {
+router.post('/user', async (req, res) => {
   const messageHistory = req.body.messageHistory; // Extract the message history from the request body
   const API_KEY = process.env.OPENAI_API_KEY; // Load the OpenAI API key from environment variables
 
