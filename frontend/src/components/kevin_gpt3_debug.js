@@ -125,7 +125,7 @@ const ChatBox = () => {
 
       try {
         const response = await axios.post(
-          'http://localhost:3001/api/generic_bot',
+          `${process.env.REACT_APP_API_BASE_URL}/generic_bot`,
           {
             messageHistory,
           }
@@ -179,7 +179,7 @@ const ChatBox = () => {
     ];
 
     try {
-      const response = await axios.post('http://localhost:3001/api/merge', {
+      const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/merge`, {
         messageHistory,
       });
       console.log('Sent to merge API');
@@ -197,7 +197,7 @@ const ChatBox = () => {
   // Function to generate future user messages via API
   const generateFutureUserMessage = async (messageHistory) => {
     try {
-      const response = await axios.post('http://localhost:3001/api/user', {
+      const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/user`, {
         messageHistory,
       });
 
@@ -220,7 +220,7 @@ const ChatBox = () => {
   // Function to generate future bot messages via API
   const generateFutureBotMessage = async (messageHistory) => {
     try {
-      const response = await axios.post('http://localhost:3001/api/bot', {
+      const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/bot`, {
         messageHistory,
       });
 
