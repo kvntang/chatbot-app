@@ -8,7 +8,13 @@ const chatRoutes = require('./routes');
 const app = express();
 
 // Middleware
-app.use(cors());
+// Update CORS to allow requests from your frontend
+app.use(cors({
+  origin: 'https://plotbot-chi.vercel.app', // Replace with your frontend URL
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 app.use(bodyParser.json());
 app.use(chatRoutes); // Use the routes defined in routes.js
 
