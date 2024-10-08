@@ -12,7 +12,7 @@ const App = () => {
     <div className="app">
       <header className="app-header">
         {/* change our bot name here */}
-        <h1> test1</h1>
+        <h1> PlotBot</h1>
       </header>
       <main className="app-main">
         <ChatBox />
