@@ -10,7 +10,7 @@ const app = express();
 // Middleware
 // Update CORS to allow requests from your frontend
 app.use(cors({
-  origin: 'https://plotbot-chi.vercel.app', // Replace with your frontend URL
+  origin: 'https://chatbot-kevin-selin.vercel.app', // Replace with your frontend URL
   methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
