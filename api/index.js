@@ -25,5 +25,7 @@ app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
+console.log('Loaded OpenAI API Key:', process.env.OPENAI_API_KEY ? 'Key found' : 'Key missing');
+
 // Export as a Vercel serverless function
 module.exports = app;
