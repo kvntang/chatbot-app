@@ -7,6 +7,8 @@
 // 2. FutureUser
 // 3. FutureBot
 
+console.log('API Base URL:', process.env.REACT_APP_API_BASE_URL);
+
 const express = require('express');
 const axios = require('axios');
 require('dotenv').config(); // Load environment variables
@@ -185,6 +187,9 @@ router.post('/user', async (req, res) => {
   }
 });
 
+router.get('/', (req, res) => {
+  res.send('Backend is running!');
+});
 
 //export 
 module.exports = router;
